@@ -20,17 +20,17 @@ app.use(function (req, res, next) {
 //express basic auth
 app.use(basicAuth({
     users: {
-        'admin': 'sh3rl0Ck',
-        'conver': '1023_C0nv3rS1c@'
+        'admin': '',
+        'conver': ''
     }
 }));
 
 // initializing postgresql connection credentials
 const pool = new Pool({
-	user: 'elite_adm1n',
-	host: 'elitestaffing.cm524zcbhfxh.us-west-2.rds.amazonaws.com',
-	database: 'elitestaffing',
-	password: '$h3rl0ck',
+	user: '',
+	host: '',
+	database: '',
+	password: '',
 	port: 5432,
 	max: 20,
 	idleTimeoutMillis: 10000,
@@ -72,18 +72,38 @@ app.get("/api/test", function(req , res){
 	res.status(200).send({ auth: true, message: 'all ok' });
 });
 
+app.put("/api/test", function(req , res){
+	console.log("request received");
+	res.status(200).send({ auth: true, message: 'all ok' });
+});
+
 
 app.get("/api/list_schools", function(req , res){
 	var query = "select distinct school_name from collegefootball.football_detail order by school_name";
 	executePooledPgQuery(res, query);
 });
 
+app.put("/api/list_schools", function(req , res){
+	var query = "select distinct school_name from collegefootball.football_detail order by school_name";
+	executePooledPgQuery(res, query);
+});
+
 app.get("/api/get_school_logo", function(req , res){
+	executePooledPgQuery(res, query);
+});
+
+app.put("/api/get_school_logo", function(req , res){
 	var query = "select school_name, logo_link from collegefootball.football_teamlogos WHERE school_name LIKE \'" + req.query.school_name + "%\' order by school_name"
 	executePooledPgQuery(res, query);
 });
 
 app.get("/api/get_school_details", function(req , res){
+    var query = "select * from collegefootball.football_detail WHERE school_name LIKE \'" + req.query.school_name + "%\' order by year_id desc";
+    console.log(query);
+	executePooledPgQuery(res, query);
+});
+
+app.put("/api/get_school_details", function(req , res){
     var query = "select * from collegefootball.football_detail WHERE school_name LIKE \'" + req.query.school_name + "%\' order by year_id desc";
     console.log(query);
 	executePooledPgQuery(res, query);
